@@ -258,6 +258,16 @@
     </style>
 </head>
 <body>
+    <div id="welcomePopup" class="popup-overlay">
+        <div class="popup-content">
+            <h2 class="popup-title">Welcome to John Doe's Profile</h2>
+            <p class="popup-text">
+                Explore my professional journey and personal details. 
+                Navigate between Resume and Biodata pages to learn more about my experience, skills, and background.
+            </p>
+            <button class="popup-close" onclick="closeWelcomePopup()">Continue</button>
+        </div>
+    </div>
     <div class="navigation">
         <button class="nav-button" onclick="showPage('resume')">Resume</button>
         <button class="nav-button" onclick="showPage('biodata')">Biodata</button>
