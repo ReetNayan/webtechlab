@@ -104,6 +104,51 @@
             color: #666;
             margin-bottom: 2rem;
         }
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #333;
+            color: white;
+            padding: 1rem;
+            border-radius: 4px;
+            display: none;
+            animation: slideIn 0.5s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        /* Loading animation */
+        .loading {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background-color: #007bff;
+            animation: loading 2s linear infinite;
+        }
+
+        @keyframes loading {
+            0% {
+                width: 0;
+            }
+            50% {
+                width: 100%;
+            }
+            100% {
+                width: 0;
+            }
+        }
     </style>
 </head>
 <body>
@@ -208,13 +253,65 @@
         </div>
     </div>
 
+    <div class="toast" id="toast"></div>
+
     <script>
+        // Show loading animation on page load
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                document.querySelector('.loading').style.display = 'none';
+                document.querySelectorAll('.container').forEach(container => {
+                    container.classList.add('show');
+                });
+                animateSections();
+            }, 1000);
+        });
+
         function showPage(pageId) {
             document.querySelectorAll('.page').forEach(page => {
                 page.classList.remove('active');
+                page.classList.remove('show');
             });
-            document.getElementById(pageId).classList.add('active');
+            const newPage = document.getElementById(pageId);
+            newPage.classList.add('active');
+            setTimeout(() => {
+                newPage.classList.add('show');
+                animateSections();
+            }, 100);
         }
+
+        function animateSections() {
+            const sections = document.querySelectorAll('.section');
+            sections.forEach((section, index) => {
+                setTimeout(() => {
+                    section.classList.add('show');
+                }, index * 200);
+            });
+        }
+
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.style.display = 'block';
+            
+            // Add animation class
+            toast.style.animation = 'slideIn 0.5s ease-out';
+            
+            // Hide toast after 3 seconds
+            setTimeout(() => {
+                toast.style.display = 'none';
+                toast.style.animation = '';
+            }, 3000);
+        }
+
+        // Add hover effect to bio-grid items
+        document.querySelectorAll('.bio-grid div:not(.bio-label)').forEach(item => {
+            item.addEventListener('click', () => {
+                showToast('Copied to clipboard!');
+                // Simulate copying to clipboard
+                navigator.clipboard.writeText(item.textContent.trim());
+            });
+        });
     </script>
 </body>
 </html>
